@@ -1444,7 +1444,6 @@ export default function App() {
                     </div>
                   )}
 
-                  {/* ── Tab 4: README ── */}
                   {activeTab === 'readme' && (
                     <div style={{ background: '#FFFFFF', border: '1px solid #DEDCD3', borderRadius: 14, overflow: 'hidden' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 18px', borderBottom: '1px solid #DEDCD3', background: '#F2EFE9' }}>
@@ -1503,7 +1502,6 @@ export default function App() {
                     </div>
                   )}
 
-                  {/* ── Tab 5: Dependency Graph ── */}
                   {activeTab === 'graph' && (
                     <div style={{ background: '#FFFFFF', border: '1px solid #DEDCD3', borderRadius: 14, overflow: 'hidden' }}>
                       <div style={{ padding: '12px 18px', borderBottom: '1px solid #DEDCD3', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#F2EFE9' }}>
@@ -1547,7 +1545,6 @@ export default function App() {
           </div>
         </section>
 
-        {/* ── 6. Differentiation Section ── */}
         <section style={{
           maxWidth: 960,
           margin: '0 auto 64px',
@@ -1583,7 +1580,7 @@ export default function App() {
             gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
             gap: 20
           }}>
-            {/* Traditional Deployment */}
+          
             <div className="interactive-card" style={{
               background: '#F8F7F2',
               border: '1px solid #DEDCD3',
@@ -1628,7 +1625,7 @@ export default function App() {
               </div>
             </div>
 
-            {/* NeuroDeploy */}
+        
             <div className="interactive-card" style={{
               background: '#FFFFFF',
               border: '1px solid #5A315D',
@@ -1676,7 +1673,6 @@ export default function App() {
           </div>
         </section>
 
-        {/* ── 7. Use Cases Section ── */}
         <section style={{
           maxWidth: 960,
           margin: '0 auto 64px',
@@ -1761,7 +1757,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* ── 8. Security & Reliability Section ── */}
+       
         <section style={{
           maxWidth: 960,
           margin: '0 auto 64px',
@@ -1834,7 +1830,6 @@ export default function App() {
           </div>
         </section>
 
-        {/* ── 9. Final Call to Action ── */}
         <section style={{
           maxWidth: 960,
           margin: '0 auto 64px',
@@ -1886,7 +1881,6 @@ export default function App() {
           </div>
         </section>
 
-        {/* ── 7. Minimal Footer ── */}
         <footer style={{
           borderTop: '1px solid #DEDCD3',
           background: '#F8F7F2',
