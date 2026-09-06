@@ -14,7 +14,6 @@ ACTIVE_DEPLOYMENTS = {}
 LOGS_DIR = "./deploy_logs"
 os.makedirs(LOGS_DIR, exist_ok=True)
 
-# ─── 1. Find Free Port ──────────────────────────────────────────────
 def find_free_port(start_port=8010, max_port=8999):
     for port in range(start_port, max_port):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -25,7 +24,6 @@ def find_free_port(start_port=8010, max_port=8999):
                 continue
     return 8080
 
-# ─── 2. Inspect Environment Variables ──────────────────────────────
 def inspect_env_vars(repo_path: str, file_list: list):
     env_keys = {}
 
@@ -44,7 +42,6 @@ def inspect_env_vars(repo_path: str, file_list: list):
                 except Exception:
                     pass
 
-    # Regex scan source code for environment calls
     py_env_regex = re.compile(r"""(?:os\.environ\.get|os\.getenv)\s*\(\s*['"]([A-Za-z0-9_]+)['"](?:\s*,\s*['"](.*?)['"])?\s*\)""")
     js_env_regex = re.compile(r"""(?:process\.env\.([A-Za-z0-9_]+)|process\.env\[['"]([A-Za-z0-9_]+)['"]\])""")
 
@@ -73,7 +70,6 @@ def inspect_env_vars(repo_path: str, file_list: list):
         for k, v in env_keys.items()
     ]
 
-# ─── 3. Generate Dockerfile & Compose ────────────────────────────────
 def generate_dockerfile(repo_path: str, tech_stack: list, file_list: list):
     stack_names = [t['name'].lower() if isinstance(t, dict) else str(t).lower() for t in tech_stack]
     filenames = [os.path.basename(f).lower() for f in file_list]
@@ -177,7 +173,7 @@ build
         "dockerignore": dockerignore.strip()
     }
 
-# ─── 4. Launch Local Process Sandbox ────────────────────────────────
+
 def launch_app(repo_id: str, env_vars: dict = None, custom_command: str = None):
     store = load_store(repo_id)
     if not store:
@@ -192,11 +188,9 @@ def launch_app(repo_id: str, env_vars: dict = None, custom_command: str = None):
     deploy_id = f"deploy_{repo_id}_{int(time.time())}"
     log_file_path = os.path.abspath(os.path.join(LOGS_DIR, f"{deploy_id}.log"))
 
-    # Determine command
     if custom_command and custom_command.strip():
         cmd = custom_command.strip()
     else:
-        # Auto-detect best runnable command
         py_files = [f for f in file_list if f.endswith('.py')]
         if 'fastapi' in stack_names or any('main.py' in f for f in py_files):
             # Check if backend directory exists
@@ -213,7 +207,6 @@ def launch_app(repo_id: str, env_vars: dict = None, custom_command: str = None):
         else:
             cmd = f'"{sys.executable}" -m http.server {port}'
 
-    # Prepare runtime environment
     run_env = os.environ.copy()
     run_env["PORT"] = str(port)
     run_env["HOST"] = "0.0.0.0"
@@ -257,7 +250,6 @@ def launch_app(repo_id: str, env_vars: dict = None, custom_command: str = None):
     }
     ACTIVE_DEPLOYMENTS[deploy_id] = deployment_data
 
-    # Background healthcheck monitor
     def probe_health():
         time.sleep(2)
         if proc.poll() is not None:
@@ -286,7 +278,6 @@ def launch_app(repo_id: str, env_vars: dict = None, custom_command: str = None):
         "command": cmd
     }
 
-# ─── 5. Stop App ───────────────────────────────────────────────────
 def stop_app(deploy_id: str):
     if deploy_id not in ACTIVE_DEPLOYMENTS:
         return {"status": "not_found", "message": "Deployment ID not active."}
@@ -307,7 +298,6 @@ def stop_app(deploy_id: str):
     data["status"] = "stopped"
     return {"status": "stopped", "deploy_id": deploy_id}
 
-# ─── 6. Get App Status & Resource Metrics ───────────────────────────
 def get_app_status(deploy_id: str):
     if deploy_id not in ACTIVE_DEPLOYMENTS:
         return {"status": "stopped", "is_running": False}
@@ -345,7 +335,7 @@ def get_app_status(deploy_id: str):
         "memory_mb": memory_mb
     }
 
-# ─── 7. Get App Logs with ML Anomaly Detection ──────────────────────
+
 def get_app_logs(deploy_id: str, tail_lines=100):
     if deploy_id not in ACTIVE_DEPLOYMENTS:
         # Check if log file exists on disk
@@ -371,7 +361,7 @@ def get_app_logs(deploy_id: str, tail_lines=100):
     except Exception as e:
         return {"logs": [{"line": f"Error reading logs: {str(e)}", "is_anomaly": True}], "anomalies_detected": 1}
 
-# ─── 8. AI Docker Doctor (Free Groq Auto-Fixer) ──────────────────────
+
 def diagnose_failure_with_ai(repo_id: str, error_logs: str, custom_context: str = ""):
     store = load_store(repo_id) or {}
     tech_stack = store.get("tech_stack", [])
