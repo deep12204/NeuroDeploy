@@ -1,0 +1,74 @@
+# =========================
+# Environment / Secrets
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Python
+# =========================
+.venv/
+venv/
+env/
+**/.venv/
+**/venv/
+**/env/
+
+__pycache__/
+**/__pycache__/
+*.py[cod]
+
+# =========================
+# Node / React
+# =========================
+node_modules/
+**/node_modules/
+
+build/
+**/build/
+
+dist/
+**/dist/
+
+.next/
+
+# =========================
+# Databases / Generated Data
+# =========================
+chroma_db/
+**/chroma_db/
+
+deploy_logs/
+**/deploy_logs/
+
+repos/
+**/repos/
+
+repo_metadata/
+**/repo_metadata/
+
+# =========================
+# IDE
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Logs / temporary files
+# =========================
+*.log
+*.stackdump
+
+# =========================
+# Python generated files
+# =========================
+*.pkl
+*.pickle
+*.joblib
