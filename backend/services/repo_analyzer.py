@@ -269,7 +269,7 @@ def index_repo(github_url: str):
         "tech_stack": tech_stack
     }
 
-# ─── Ask Question with Chat History ────────────────────────────────
+
 def ask_question(repo_id: str, question: str):
     if repo_id not in REPO_STORE:
         data = load_store(repo_id)
